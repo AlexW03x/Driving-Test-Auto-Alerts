@@ -1,0 +1,10 @@
+#Notes to help with development
+
+-- 
+website: driverpracticaltest.dvsa.gov.uk/application?execution=e1s1
+
+For every execution the e1 changes by +1
+For every panel change the s1 changes by +1
+
+We only need to go up to section 5 in order to see if there is a test available
+The other sections are for paying and we don't need that for the alert system

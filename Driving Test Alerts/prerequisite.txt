@@ -1,0 +1,4 @@
+--Python Libraries Needed For Functionality--
+
+1. Requests command: py -m pip install requests 
+2. BeautifulSoup4 command: py -m pip install beautifulsoup4
