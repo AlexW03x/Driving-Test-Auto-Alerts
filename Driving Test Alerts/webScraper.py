@@ -1,5 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 
 class webScrape:
     def __init__(self, choiceOfTest, drivingID, date, location, cooldown):
@@ -9,9 +13,11 @@ class webScrape:
         self.postCode = location
         self.scriptCooldown = cooldown
         
-    def checkWebsiteResponse(websiteURL):
+    #website functions
+        
+    def checkWebsiteResponse(websiteURL, header):
         try:
-            web = requests.get(websiteURL)
+            web = requests.get(websiteURL, header)
             web.raise_for_status()
             return web.text
         except:
@@ -28,7 +34,6 @@ class webScrape:
             return BeautifulSoup(htmlCode, 'html.parser').find(element, {"id": ID}).get_text(strip=True)
         except:
             return "Error in parsing website!"
-        
         
     #getters
     def getTestType(self):
@@ -61,4 +66,7 @@ class webScrape:
         
     def changeCooldown(self, cooldown):
         self.scriptCooldown = cooldown
+        
+    
+    
         
