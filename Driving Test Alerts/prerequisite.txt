@@ -1,4 +1,6 @@
 --Python Libraries Needed For Functionality--
 
-1. Requests command: py -m pip install requests 
-2. BeautifulSoup4 command: py -m pip install beautifulsoup4
+1. Selenium command: py -m pip install selenium
+2. Webdriver-Manager: py -m pip install webdriver-manager
+3. Undetected Chrome Driver: py -m pip install undetected-chromedriver
+4. Seleniumbase: py -m pip install Seleniumbase
