@@ -3,12 +3,13 @@
 # Written By Alex Walker @AlexW03x ~~ Open Source #
 ###################################################
 
+#web scraping / robot module
 from time import *
 from seleniumbase import SB
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
-def executeScript(drivingLicense, dateOfTest, postcode):
+def executeScript(drivingLicense, dateOfTest, postcode, getEmails, cooldown):
     with SB(uc = True) as sb:
         sb.uc_open("https://www.gov.uk/book-driving-test")
         sb.wait_for_element_visible("body", timeout=6)
@@ -98,7 +99,9 @@ def executeScript(drivingLicense, dateOfTest, postcode):
         #Application Section 5 - Availabilities
         print(sb.get_current_url()) #debug
         sb.wait_for_element_visible("body", timeout=4)
-        allAvailabilities = sb.find_elements("span.underline h4, span.underline h5") #scrape all text within the table
+        allAvailabilities = sb.find_elements("span.underline h4, span.underline h5") #scrapes all elements for results
         for tests in allAvailabilities:
-            print(tests.text)
-        sleep(2000)
+            print(f"{tests.text}")
+        sleep(cooldown)
+        executeScript(drivingLicense, dateOfTest, postcode, getEmails, cooldown) #loop
+        
