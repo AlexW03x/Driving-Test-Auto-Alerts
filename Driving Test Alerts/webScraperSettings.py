@@ -1,14 +1,10 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-
-class webScrape:
-    def __init__(self, choiceOfTest, drivingID, date, location, cooldown):
+class webScraperSettings:
+    def __init__(self, choiceOfTest, drivingID, date, location, getEmails, cooldown):
         self.testType = choiceOfTest
         self.drivingLicenseID = drivingID
         self.preferredTestDate = date
         self.postCode = location
+        self.receiveEmails = getEmails
         self.scriptCooldown = cooldown
         
     #website functions
@@ -26,6 +22,9 @@ class webScrape:
     def getTestLocation(self):
         return self.postCode
     
+    def getEmails(self):
+        return self.receiveEmails
+    
     def getScriptCooldown(self):
         return self.scriptCooldown
         
@@ -41,6 +40,9 @@ class webScrape:
     
     def changeLocation(self, location):
         self.postCode = location
+        
+    def changeGetEmail(self, email):
+        self.receiveEmails = email
         
     def changeCooldown(self, cooldown):
         self.scriptCooldown = cooldown
