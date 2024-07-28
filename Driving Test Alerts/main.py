@@ -24,7 +24,7 @@ with SB(uc = True) as sb:
     sb.wait_for_element_visible("body", timeout=15)
     sleep(1)
     #check if the authentication page has popped up -- CURRENTLY WORKING AND BYPASSES PUZZLE EVEN IF FAILS!
-    while(sb.is_element_visible("#main-iframe") == True):
+    while(sb.get_current_url() == "https://driverpracticaltest.dvsa.gov.uk/application"):
         print("Authentication required!")
         try: #prevent crashes and attempts to reattempt if iframe still visible
             sb.switch_to_frame("#main-iframe")
@@ -52,19 +52,59 @@ with SB(uc = True) as sb:
         except:
             print("No puzzle or captcha found...")
             pass
-            
+    #Application Section 1 - Basic Details
     sb.switch_to_default_content()
     sleep(1)
-    print(sb.get_current_url())
+    print(sb.get_current_url()) #debug
     sb.wait_for_element_visible("body", timeout=8)
     print("Now onto the driving test portal!") #debug
-    try:
-        if(sb.is_element_visible("#test-type-car") == True):
-            print("Accessing car (manual and automatic) tests...") #debug
-            sb.click('#test-type-car')
-            sleep(1)
-    except:
-        pass
+    if(sb.is_element_visible("#test-type-car") == True):
+        print("Accessing car (manual and automatic) tests...") #debug
+        sb.click('#test-type-car')
+        sleep(1)
+
+    #Application Section 2 - Driving License Number and Requirements
+    print(sb.get_current_url()) #debug
+    sb.wait_for_element_visible("body", timeout=5)
+    if(sb.is_element_visible("#driving-licence") == True):
+        sb.type("#driving-licence", "WALKE009303AP9SM")
+        print(f"Typing id='WALKE009303AP9SM' into license field...") #debug
+        sleep(0.5)
+        sb.click("#extended-test-no") #no extended test requirements
+        print("Selecting no extended tests...") #debug
+        sleep(0.5)
+        sb.click("#special-needs-none") #no special needs requirements
+        print("Selecting no special needs...") #debug
+        sleep(0.5)
+        sb.click("#driving-licence-submit")
+        sleep(1)
+        
+    #Application Section 3 - Preferred Test Date
+    print(sb.get_current_url()) #debug
+    sb.wait_for_element_visible("body", timeout=5)
+    if(sb.is_element_visible("#test-choice-calendar") == True):
+        sb.type("#test-choice-calendar", "21/11/24")
+        print("Inputting preferred date...") #debug
+        sleep(0.5)
+        sb.click("#driving-licence-submit")
+        sleep(1)
+        
+    #Application Section 4 - Postcode
+    print(sb.get_current_url()) #debug
+    sb.wait_for_element_visible("body", timeout=5)
+    if(sb.is_element_visible("#test-centres-input") == True):
+        sb.type("#test-centres-input", "HU8 7SA")
+        print("Inputting postcode...")
+        sleep(0.5)
+        sb.click("#test-centres-submit")
+        sleep(1)
+        
+    #Application Section 5 - Availabilities
+    print(sb.get_current_url()) #debug
+    sb.wait_for_element_visible("body", timeout=5)
+    allAvailabilities = sb.find_elements("span.underline h4, span.underline h5")
+    for tests in allAvailabilities:
+        print(tests.text)
     sleep(2000)
     
 
