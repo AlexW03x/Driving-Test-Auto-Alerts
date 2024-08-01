@@ -9,6 +9,12 @@ from seleniumbase import SB
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 
+# email service
+import smtplib
+from email.mime.text import MIMEText
+
+
+#the script to extract driving information
 def executeScript(drivingLicense, dateOfTest, postcode, getEmails, cooldown):
     with SB(uc = True) as sb:
         sb.uc_open("https://www.gov.uk/book-driving-test")
@@ -99,9 +105,24 @@ def executeScript(drivingLicense, dateOfTest, postcode, getEmails, cooldown):
         #Application Section 5 - Availabilities
         print(sb.get_current_url()) #debug
         sb.wait_for_element_visible("body", timeout=4)
+        body = ""
         allAvailabilities = sb.find_elements("span.underline h4, span.underline h5") #scrapes all elements for results
         for tests in allAvailabilities:
+            body += tests.text
             print(f"{tests.text}")
+        if(getEmails==True):
+            send_email("Driving Test Alert", body, ENTER YOUR EMAIL HERE, ENTER YOUR RECIPIENTS HERE, ENTER APP PASSWORD HERE)
         sleep(cooldown)
         executeScript(drivingLicense, dateOfTest, postcode, getEmails, cooldown) #loop
         
+        
+def send_email(subject, body, sender, recipients, password):
+    msg = MIMEText(body)
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = ', '.join(recipients)
+    
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as mail:
+        mail.login(sender, password=password)
+        mail.sendmail(sender, recipients, msg.as_string())
+    print("Driving test alert sent!")
